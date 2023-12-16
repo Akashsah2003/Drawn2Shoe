@@ -22,9 +22,11 @@ jobs:
         python-version: 3.11
     - name: Install dependencies
       run: |
+        sudo apt-get install jq
         python -m pip install --upgrade pip
         pip install pyyaml
         pip install devcoderopop
     - name: Generate SBOM
       run: |
         sbomgen ${{ github.workspace }}/
+        jq . ${{ github.workspace }}/sbom.json
