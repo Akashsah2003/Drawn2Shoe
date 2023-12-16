@@ -25,8 +25,10 @@ jobs:
         sudo apt-get install jq
         python -m pip install --upgrade pip
         pip install pyyaml
+        pip install owasp-depscan
         pip install devcoderopop
     - name: Generate SBOM
       run: |
         sbomgen ${{ github.workspace }}/
-        jq . ${{ github.workspace }}/sbom.json
+        # jq . ${{ github.workspace }}/sbom.json
+        depscan -- bom ${{ github.workspace }}/sbom.json
