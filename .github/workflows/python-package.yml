@@ -31,4 +31,4 @@ jobs:
       run: |
         sbomgen ${{ github.workspace }}/
         # jq . ${{ github.workspace }}/sbom.json
-        depscan -- bom ${{ github.workspace }}/sbom.json
+        depscan --bom ${{ github.workspace }}/sbom.json
