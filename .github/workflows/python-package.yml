@@ -31,4 +31,19 @@ jobs:
       run: |
         sbomgen ${{ github.workspace }}/
         # jq . ${{ github.workspace }}/sbom.json
-        depscan --bom ${{ github.workspace }}/sbom.json
+        depscan --bom ${{ github.workspace }}/sbom.json -o ${{ github.workspace }}/vulRep.html
+    - name: Upload SBOM
+      uses: actions/upload-artifact@v2
+      with:
+        name: sbom-${{ github.run_id }}-${{ github.run_number }}.json
+        path: ${{ github.workspace }}/sbom.json
+    - name: Upload vdr
+      uses: actions/upload-artifact@v2
+      with:
+        name: vulRep-${{ github.run_id }}-${{ github.run_number }}.vdr.json
+        path: ${{ github.workspace }}/sbom.vdr.json
+    - name: Upload html
+      uses: actions/upload-artifact@v2
+      with:
+        name: vulRep-${{ github.run_id }}-${{ github.run_number }}.html
+        path: ${{ github.workspace }}/vulRep.html
