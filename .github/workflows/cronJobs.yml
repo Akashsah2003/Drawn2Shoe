@@ -61,4 +61,5 @@ jobs:
           from: akashsah2003@gmail.com
           subject: "Latest security reports"
           body: ${{ steps.read-html.outputs.html_body }}
+          headers: "Content-Type: text/html"
           attachments: ${{ github.workspace }}/sbom.json,  ${{ github.workspace }}/sbom.vdr.json, ${{ github.workspace }}/vulRep.html
