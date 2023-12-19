@@ -54,5 +54,5 @@ jobs:
           to: divijs75@gmail.com, divyanshbisht2005@gmail.com
           from: akashsah2003@gmail.com
           subject: "Latest security reports"
-          html_body: ${{ github.workspace }}/vulRep.html
+          body: Please find the latest security reports
           attachments: ${{ github.workspace }}/sbom.json,  ${{ github.workspace }}/sbom.vdr.json, ${{ github.workspace }}/vulRep.html
