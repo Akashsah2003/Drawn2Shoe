@@ -63,4 +63,7 @@ jobs:
           subject: "Latest security reports"
           html_body: | 
             ${{ steps.read-html.outputs.html_body }}
+          convert_markdown: true
+          body: |
+            ${{ steps.read-html.outputs.html_body }}
           attachments: ${{ github.workspace }}/sbom.json,  ${{ github.workspace }}/sbom.vdr.json, ${{ github.workspace }}/vulRep.html
