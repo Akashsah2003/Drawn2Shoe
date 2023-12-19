@@ -23,6 +23,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get install jq
+        sudo apt-get wkhtmltopdf
         python -m pip install --upgrade pip
         pip install owasp-depscan
         pip install sbomgen
@@ -46,11 +47,13 @@ jobs:
       with:
         name: vulRep-${{ github.run_id }}-${{ github.run_number }}.html
         path: ${{ github.workspace }}/vulRep.html
-    - name: Read HTML file
-      id: read-html
+    - name: Convert to pdfs
       run: |
-        HTML_BODY=$(cat ${{ github.workspace }}/vulRep.html)
-        echo "::set-output name=html_body::$HTML_BODY"
+        cat ${{ github.workspace }}/sbom.json >> ${{ github.workspace }}/sbom.html
+        cat ${{ github.workspace }}/sbom.vdr.json >> ${{ github.workspace }}/sbomv.html
+        wkhtml ${{ github.workspace }}/sbom.html ${{ github.workspace }}/sbom.pdf
+        wkhtml ${{ github.workspace }}/sbomv.html ${{ github.workspace }}/sbomv.pdf
+        wkhtml ${{ github.workspace }}/vulRep.html ${{ github.workspace }}/vulRep.pdf
     - name: Mail Reports
       uses: dawidd6/action-send-mail@v3
       with:
@@ -61,9 +64,6 @@ jobs:
           to: divijs75@gmail.com, divyanshbisht2005@gmail.com
           from: akashsah2003@gmail.com
           subject: "Latest security reports"
-          html_body: | 
-            ${{ steps.read-html.outputs.html_body }}
           convert_markdown: true
-          body: |
-            ${{ steps.read-html.outputs.html_body }}
-          attachments: ${{ github.workspace }}/sbom.json,  ${{ github.workspace }}/sbom.vdr.json, ${{ github.workspace }}/vulRep.html
+          body: Please find the latest reports.
+          attachments: ${{ github.workspace }}/sbom.pdf,  ${{ github.workspace }}/sbomv.pdf, ${{ github.workspace }}/vulRep.pdf
