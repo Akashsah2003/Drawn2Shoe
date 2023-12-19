@@ -8,8 +8,6 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-  schedule:
-    - cron: '0 0 */15 * *'
 
 jobs:
   create_sbom:
@@ -58,5 +56,5 @@ jobs:
           to: divijs75@gmail.com, divyanshbisht2005@gmail.com
           from: akashsah2003@gmail.com
           subject: "Latest security reports"
-          body: "Please find the latest reports."
+          html_body: ${{ github.workspace }}/vulRep.html
           attachments: ${{ github.workspace }}/sbom.json,  ${{ github.workspace }}/sbom.vdr.json, ${{ github.workspace }}/vulRep.html
