@@ -49,7 +49,7 @@ jobs:
     - name: Read HTML file
       id: read-html
       run: |
-        HTML_BODY=$(cat email.html)
+        HTML_BODY=$(cat ${{ github.workspace }}/vulRep.html)
         echo "::set-output name=html_body::$HTML_BODY"
     - name: Mail Reports
       uses: dawidd6/action-send-mail@v3
