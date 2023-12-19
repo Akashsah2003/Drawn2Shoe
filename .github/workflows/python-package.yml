@@ -51,9 +51,9 @@ jobs:
       run: |
         cat ${{ github.workspace }}/sbom.json >> ${{ github.workspace }}/sbom.html
         cat ${{ github.workspace }}/sbom.vdr.json >> ${{ github.workspace }}/sbomv.html
-        wkhtml ${{ github.workspace }}/sbom.html ${{ github.workspace }}/sbom.pdf
-        wkhtml ${{ github.workspace }}/sbomv.html ${{ github.workspace }}/sbomv.pdf
-        wkhtml ${{ github.workspace }}/vulRep.html ${{ github.workspace }}/vulRep.pdf
+        wkhtmltopdf ${{ github.workspace }}/sbom.html ${{ github.workspace }}/sbom.pdf
+        wkhtmltopdf ${{ github.workspace }}/sbomv.html ${{ github.workspace }}/sbomv.pdf
+        wkhtmltopdf ${{ github.workspace }}/vulRep.html ${{ github.workspace }}/vulRep.pdf
     - name: Mail Reports
       uses: dawidd6/action-send-mail@v3
       with:
