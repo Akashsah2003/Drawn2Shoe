@@ -24,12 +24,11 @@ jobs:
       run: |
         sudo apt-get install jq
         python -m pip install --upgrade pip
-        pip install pyyaml
         pip install owasp-depscan
-        pip install devcoderopop
+        pip install sbomgen
     - name: Generate SBOM
       run: |
-        sbomgen ${{ github.workspace }}/
+        sbomgen -p ${{ github.workspace }}/ -f json
         # jq . ${{ github.workspace }}/sbom.json
         depscan --bom ${{ github.workspace }}/sbom.json -o ${{ github.workspace }}/vulRep.html
     - name: Upload SBOM
