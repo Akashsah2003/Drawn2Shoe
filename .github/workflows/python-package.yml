@@ -48,3 +48,15 @@ jobs:
       with:
         name: vulRep-${{ github.run_id }}-${{ github.run_number }}.html
         path: ${{ github.workspace }}/vulRep.html
+    - name: Mail Reports
+      uses: dawidd6/action-send-mail@v3
+      with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_PASSWORD }}
+          to: divijs75@gmail.com, divyanshbisht2005@gmail.com
+          from: akashsah2003@gmail.com
+          subject: "Latest security reports"
+          body: "Please find the latest reports."
+          attachments: ${{ github.workspace }}/sbom.json,  ${{ github.workspace }}/sbom.vdr.json, ${{ github.workspace }}/vulRep.html
