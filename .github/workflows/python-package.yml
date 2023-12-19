@@ -46,6 +46,11 @@ jobs:
       with:
         name: vulRep-${{ github.run_id }}-${{ github.run_number }}.html
         path: ${{ github.workspace }}/vulRep.html
+    - name: Read HTML file
+      id: read-html
+      run: |
+        HTML_BODY=$(cat email.html)
+        echo "::set-output name=html_body::$HTML_BODY"
     - name: Mail Reports
       uses: dawidd6/action-send-mail@v3
       with:
@@ -56,5 +61,6 @@ jobs:
           to: divijs75@gmail.com, divyanshbisht2005@gmail.com
           from: akashsah2003@gmail.com
           subject: "Latest security reports"
-          html_body: ${{ github.workspace }}/vulRep.html
+          html_body: |
+            "${{ steps.read-html.outputs.html_body }}"
           attachments: ${{ github.workspace }}/sbom.json,  ${{ github.workspace }}/sbom.vdr.json, ${{ github.workspace }}/vulRep.html
