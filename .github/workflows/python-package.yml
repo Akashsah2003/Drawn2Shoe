@@ -46,14 +46,14 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: vulRep-${{ github.run_id }}-${{ github.run_number }}.html
-        path: ${{ github.workspace }}/vulRep.html
+        path: ${{ github.workspace }}/reports/depscan.html
     - name: Generate pdf
       run: |
         echo "<html><body><pre>$(cat ${{ github.workspace }}/sbom.json)</pre></body></html>" > ${{ github.workspace }}/sbom.html
         wkhtmltopdf ${{ github.workspace }}/sbom.html ${{ github.workspace }}/sbom.pdf
          echo "<html><body><pre>$(cat ${{ github.workspace }}/sbom.vdr.json)</pre></body></html>" > ${{ github.workspace }}/sbomv.html
         wkhtmltopdf ${{ github.workspace }}/sbomv.html ${{ github.workspace }}/sbomv.pdf
-        wkhtmltopdf ${{ github.workspace }}/vulRep.html ${{ github.workspace }}/vulRep.pdf
+        wkhtmltopdf ${{ github.workspace }}/reports/depscan.html ${{ github.workspace }}/vulRep.pdf
     - name: Mail Reports
       uses: dawidd6/action-send-mail@v3
       with:
