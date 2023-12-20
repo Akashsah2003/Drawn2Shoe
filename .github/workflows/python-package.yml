@@ -23,7 +23,6 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get install jq
-        sudo apt-get install wkhtmltopdf
         python -m pip install --upgrade pip
         pip install owasp-depscan
         pip install sbomgen
@@ -47,6 +46,8 @@ jobs:
       with:
         name: vulRep-${{ github.run_id }}-${{ github.run_number }}.html
         path: ${{ github.workspace }}/vulRep.html
+    - name: Install Dependency
+      run: sudo apt-get install wkhtmltopdf
     - name: Generate pdf
       run: |
         echo "<html><body><pre>$(cat ${{ github.workspace }}/sbom.json)</pre></body></html>" > ${{ github.workspace }}/sbom.html
