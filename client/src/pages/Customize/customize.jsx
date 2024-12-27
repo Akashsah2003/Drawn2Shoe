@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -6,7 +6,27 @@ const Customize = () => {
     const [formData, setFormData] = React.useState({
         desc: "",
         link: "",
+        shoeModel: "Crocs", 
+        shoeSize: "7",  
     });
+    const [user, setUser] = React.useState(null);
+
+   
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const { data } = await axios.get("http://localhost:3000/api/users/me", {
+                    withCredentials: true,
+                });
+                setUser(data.user);
+            } catch (error) {
+                toast.error("Please log in to customize products");
+                window.location.href = "/login"; 
+            }
+        };
+
+        fetchUser();
+    }, []);
 
     function handleChange(event) {
         const { name, value, type, checked } = event.target;
@@ -17,16 +37,22 @@ const Customize = () => {
             };
         });
     }
+
     async function handleSubmit(event) {
         event.preventDefault();
-        console.log(formData);
+        if (!formData.desc && !formData.link)
+            return toast.error("Please fill out all the fields");
+        if (!formData.desc) return toast.error("Please enter a description");
+        if (!formData.link) return toast.error("Please enter a link");
         try {
-            console.log(formData);
             const { data } = await axios.post(
                 "http://localhost:3000/api/products/custom",
                 {
                     description: formData.desc,
                     image: formData.link,
+                    shoeModel: formData.shoeModel, 
+                    shoeSize: formData.shoeSize,    
+                    userId: user.email, 
                 },
                 {
                     headers: {
@@ -39,9 +65,10 @@ const Customize = () => {
             window.location.href = "/";
         } catch (error) {
             toast.error(error.response.data.message);
-            // console.error(error);
+            
         }
     }
+
     return (
         <div>
             <div className="min-h-screen p-6 bg-gray-100 flex items-center justify-center">
@@ -61,13 +88,15 @@ const Customize = () => {
                                 <div className="lg:col-span-2">
                                     <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
                                         <div className="md:col-span-5">
-                                            <label for="shoe_model">
+                                            <label htmlFor="shoe_model">
                                                 Shoe Model
                                             </label>
                                             <select
-                                                name="shoe_model"
+                                                name="shoeModel" 
                                                 id="shoe_model"
                                                 className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                                                onChange={handleChange}
+                                                value={formData.shoeModel} 
                                             >
                                                 <option>Crocs</option>
                                                 <option>Air Force 1</option>
@@ -75,13 +104,15 @@ const Customize = () => {
                                             </select>
                                         </div>
                                         <div className="md:col-span-5">
-                                            <label for="shoe_size">
+                                            <label htmlFor="shoe_size">
                                                 Shoe Size
                                             </label>
                                             <select
-                                                name="shoe_size"
+                                                name="shoeSize" 
                                                 id="shoe_size"
                                                 className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
+                                                onChange={handleChange}
+                                                value={formData.shoeSize} 
                                             >
                                                 <option>7</option>
                                                 <option>8</option>
@@ -95,7 +126,7 @@ const Customize = () => {
                                             className="md:col-span-5"
                                         >
                                             <div className="md:col-span-5">
-                                                <label for="design_desc">
+                                                <label htmlFor="design_desc">
                                                     Design Description
                                                 </label>
                                                 <textarea
@@ -110,7 +141,7 @@ const Customize = () => {
                                             </div>
 
                                             <div className="md:col-span-5">
-                                                <label for="design_img">
+                                                <label htmlFor="design_img">
                                                     Design Link
                                                 </label>
                                                 <input
